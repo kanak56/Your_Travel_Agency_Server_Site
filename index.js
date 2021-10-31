@@ -23,7 +23,7 @@ async function run() {
         const database = client.db('YTA_DB');
         const servicesCollection = database.collection('services');
         const orderCollection = database.collection('orders');
-        // console.log('connected to database');
+        console.log('connected to database');
 
 
         // Get service API
