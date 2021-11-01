@@ -24,7 +24,7 @@ async function run() {
         const database = client.db('YTA_DB');
         const servicesCollection = database.collection('services');
         const orderCollection = database.collection('orders');
-        console.log('connected to database');
+        // console.log('connected to database');
 
 
         // Get service API
@@ -32,6 +32,12 @@ async function run() {
             const cursor = servicesCollection.find({});
             const services = await cursor.toArray();
             res.send(services);
+        });
+
+        app.get('/orders', async (req, res) => {
+            const cursor = orderCollection.find({});
+            const order = await cursor.toArray();
+            res.send(order);
         });
 
         // Get Single API
@@ -59,7 +65,8 @@ async function run() {
         app.post('/orders', async (req, res) => {
             const order = req.body;
             console.log('order', order);
-            res.send('Order possed')
+            const output = await orderCollection.insertOne(order);
+            res.json(output);
         })
     }
 
