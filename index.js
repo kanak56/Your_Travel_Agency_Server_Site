@@ -38,6 +38,7 @@ async function run() {
         app.get('/orders', async (req, res) => {
             const cursor = orderCollection.find({});
             const order = await cursor.toArray();
+            // console.log('1', orderCollection.find({}).toArray())
             res.send(order);
         });
 
@@ -56,10 +57,14 @@ async function run() {
             const id = req.params.id;
             // console.log('Order find', id);
             const query = { _id: ObjectId(id) };
+            const order = orderCollection.findOne(query);
             // console.log(query);
-            const order = await orderCollection.findOne(query);
             // console.log(await orderCollection.find(query));
-            res.json(order);
+            // don't know why it shows null
+            // res.json(await orderCollection.findOne(query));
+            // console.log('1', orderCollection.find({}).toArray())
+            // console.log('2', order);
+            res.send(order)
         });
 
 
@@ -91,13 +96,13 @@ async function run() {
         })
 
         // Delete api services
-        app.delete('/services/:id', async (req, res) => {
-            const id = req.params.id;
-            const query = { _id: ObjectId(id) };
-            const result = await servicesCollection.deleteOne(query);
-            console.log("Deleted", id);
-            res.json(result);
-        })
+        // app.delete('/services/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const query = { _id: ObjectId(id) };
+        //     const result = await servicesCollection.deleteOne(query);
+        //     console.log("Deleted", id);
+        //     res.json(result);
+        // })
     }
 
     finally {
