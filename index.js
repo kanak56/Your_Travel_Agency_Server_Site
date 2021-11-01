@@ -68,6 +68,23 @@ async function run() {
             const output = await orderCollection.insertOne(order);
             res.json(output);
         })
+
+        // get single order api
+        app.get('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log('Order find', id);
+            const query = { _id: ObjectId(id) };
+            const order = await orderCollection.findOne(query);
+            res.json(order);
+        });
+        // Delete Api
+        app.delete('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await orderCollection.deleteOne(query);
+            console.log("Deleted", id);
+            res.json(result);
+        })
     }
 
     finally {
