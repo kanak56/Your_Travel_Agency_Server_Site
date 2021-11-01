@@ -4,6 +4,7 @@ const cors = require('cors');
 const port = process.env.PORT || 5000;
 require('dotenv').config()
 const ObjectId = require('mongodb').ObjectId;
+
 const { MongoClient } = require('mongodb');
 
 // midleware
@@ -46,10 +47,20 @@ async function run() {
             const id = req.params.id;
             console.log('geting service');
             const query = { _id: ObjectId(id) };
+            console.log(query);
             const service = await servicesCollection.findOne(query);
             res.json(service);
         });
-
+        // get single order api
+        app.get('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            // console.log('Order find', id);
+            const query = { _id: ObjectId(id) };
+            // console.log(query);
+            const order = await orderCollection.findOne(query);
+            // console.log(await orderCollection.find(query));
+            res.json(order);
+        });
 
 
         // POST API
@@ -69,19 +80,21 @@ async function run() {
             res.json(output);
         })
 
-        // get single order api
-        app.get('/orders/:id', async (req, res) => {
-            const id = req.params.id;
-            console.log('Order find', id);
-            const query = { _id: ObjectId(id) };
-            const order = await orderCollection.findOne(query);
-            res.json(order);
-        });
-        // Delete Api
+
+        // Delete Api orders
         app.delete('/orders/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await orderCollection.deleteOne(query);
+            console.log("Deleted", id);
+            res.json(result);
+        })
+
+        // Delete api services
+        app.delete('/services/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await servicesCollection.deleteOne(query);
             console.log("Deleted", id);
             res.json(result);
         })
